@@ -11,11 +11,11 @@ if name:
 name_killed = None
 if name:
 	if name.lower() == 'q':
-		st.write("人だね、殺します")
+		st.write(f"{name} : 人だね、殺します")
 		name_killed = name
 		name = "激オコの我"
 	else:
-		st.write("どしたん？")
+		st.write(f"{name} : どしたん？")
 question = [
     "それでそれで？",
     "ほかには？",
