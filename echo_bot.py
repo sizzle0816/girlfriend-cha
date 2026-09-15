@@ -79,21 +79,20 @@ if user_msg:
     chosen_ques = rd.choice(available_questions)
 
     st.session_state.last_ques = chosen_ques
-
-  if user_msg.lower() == 'q':
-    if name_killed.lower() != 'q':
-      st.write("また来てねっ")
-    else:
-      st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
-    st.stop()
+if user_msg.lower() == 'q':
+  if name_killed.lower() != 'q':
+    st.write("また来てねっ")
   else:
-    st.write("既読")
-    typing_time = rd.uniform(2.0, 5.0)
-    time.sleep(typing_time)
-    if name_killed:
-      st.write(f"{name} : {chosen_reply}（圧）")
-      st.write(f"{name} : {chosen_ques}（圧）")
-    else:
-      st.write(f"{name} : {chosen_reply}")
-      st.write(f"{name} : {chosen_ques}")
-    user_msg = st.text_input("\nYou : ", key="chat_input")
+    st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
+  st.stop()
+else:
+  st.write("既読")
+  typing_time = rd.uniform(2.0, 5.0)
+  time.sleep(typing_time)
+  if name_killed:
+    st.write(f"{name} : {chosen_reply}（圧）")
+    st.write(f"{name} : {chosen_ques}（圧）")
+  else:
+    st.write(f"{name} : {chosen_reply}")
+    st.write(f"{name} : {chosen_ques}")
+  user_msg = st.text_input("\nYou : ", key="chat_input")
