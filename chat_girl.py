@@ -26,7 +26,7 @@ replies = [
     "へーそうなんだ",
     "すごーい（棒）",
     "ま？",
-	@@ -37,55 +24,64 @@
+	"ふ～ん"
     "{user_msg}...ってコト！？",
     "{user_msg}"
 ]
@@ -39,15 +39,6 @@ if "last_ques" not in st.session_state:
 # メッセージ入力
 user_msg = st.text_input("You：", key="chat_input")
 if user_msg:
-    # Qが入力された場合
-  if name_killed:
-    st.write(
-      "優しくしてりゃキューキューいいやがって"
-      "二度とその汚ねぇツラ見せんなよっ"
-    )
-  else:
-    st.write("また来てねっ")
-  st.stop()
   # 前回と異なる返信を選ぶ
   available_replies = [
     r for r in replies
@@ -81,4 +72,3 @@ if user_msg:
   else:
     st.write(f"{name} : {chosen_reply}")
     st.write(f"{name} : {chosen_ques}")
-  user_msg = st.text_input("\nYou : ", key="chat_input")
