@@ -8,12 +8,13 @@ st.write("終わるにはQまたはqを押してねっ")
 name = st.chat_input("彼女の名前：")
 st.write(f"{name}：やっほー")
 name_killed = None
-if name.lower() == 'q':
-  st.write("人だね、殺します")
-  name_killed = name
-  name = "激オコの我"
-else:
-  st.write("どしたん？")
+if name:
+	if name.lower() == 'q':
+		st.write("人だね、殺します")
+        name_killed = name
+        name = "激オコの我"
+    else:
+        st.write("どしたん？")
 question = [
     "それでそれで？",
     "ほかには？",
