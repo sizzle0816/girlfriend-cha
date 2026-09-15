@@ -71,4 +71,4 @@ if user_msg:
     else:
       st.write(f"{name} : {chosen_reply}")
       st.write(f"{name} : {chosen_ques}")
-  user_msg = st.text_input("\nYou : ", key="chat_input")
+  　user_msg = st.text_input("\nYou : ", key="chat_input")
