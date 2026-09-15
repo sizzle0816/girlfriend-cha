@@ -2,28 +2,15 @@ import streamlit as st
 import random as rd
 import time
 
-st.title("彼女とのチャットアプリ")
-
-st.write("終わるにはQまたはqを押してねっ")
-name = st.text_input("彼女の名前：")
-st.write(f"{name}：やっほー")
-name_killed = None
-if name.lower() == 'q':
-  st.write("人だね、殺します")
-  name_killed = name
-  name = "激オコの我"
-else:
-  st.write("どしたん？")
-
-user_msg = st.text_input("\nYou : ", key="chat_input")
-question = [
+# 定数
+QUESTIONS = [
     "それでそれで？",
     "ほかには？",
     "ねぇねぇ、聞いてよ",
     "うんうん！",
-    "ってことは...？"
+    "ってことは...?"
 ]
-replies = [
+REPLIES = [
     "へーそうなんだ",
     "すごーい（棒）",
     "ま？",
@@ -37,55 +24,64 @@ replies = [
     "{user_msg}...ってコト！？",
     "{user_msg}"
 ]
-##########################################################
-# 前回の返信を保存
+
+st.title("彼女とのチャットアプリ")
+
+# セッション初期化
+if "chat" not in st.session_state:
+    st.session_state.chat = []  # [{'role':'user'|'bot','text':...}, ...]
 if "last_reply" not in st.session_state:
     st.session_state.last_reply = None
 if "last_ques" not in st.session_state:
     st.session_state.last_ques = None
-# メッセージ入力
-user_msg = st.text_input("You：", key="chat_input")
-if user_msg:
-    # Qが入力された場合
-  if name_killed:
-    st.write(
-      "優しくしてりゃキューキューいいやがって"
-      "二度とその汚ねぇツラ見せんなよっ"
-    )
-  else:
-    st.write("また来てねっ")
-  st.stop()
-  # 前回と異なる返信を選ぶ
-  available_replies = [
-    r for r in replies
-    if r != st.session_state.last_reply
-  ]
-  chosen_reply = rd.choice(available_replies)
-  chosen_reply = chosen_reply.format(user_msg=user_msg)
-  st.session_state.last_reply = chosen_reply
-  # 前回と異なる質問を選ぶ
-  available_questions = [
-    q for q in question
-    if q != st.session_state.last_ques
-  ]
-  chosen_ques = rd.choice(available_questions)
-  st.session_state.last_ques = chosen_ques
-#########################################################
-  if user_msg.lower() == 'q':
-    if not name_killed:
-      st.write("また来てねっ")
+
+# 名前入力（終了はチャット入力で行う）
+name = st.text_input("彼女の名前：", value="彼女")
+if name.strip() == "":
+    name = "彼女"
+
+# チャット表示
+for msg in st.session_state.chat:
+    role = msg.get("role")
+    text = msg.get("text")
+    if role == "user":
+        st.markdown(f"**You:** {text}")
     else:
-      st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
-    st.stop()
-  else:
-    st.write("既読")
-    typing_time = rd.uniform(2.0, 5.0)
-    time.sleep(typing_time)
-    
-  if name_killed:
-    st.write(f"{name} : {chosen_reply}（圧）")
-    st.write(f"{name} : {chosen_ques}（圧）")
-  else:
-    st.write(f"{name} : {chosen_reply}")
-    st.write(f"{name} : {chosen_ques}")
-  user_msg = st.text_input("\nYou : ", key="chat_input")
+        st.markdown(f"**{name}:** {text}")
+
+# 入力フォーム（1つに統一）
+with st.form(key="chat_form", clear_on_submit=True):
+    user_msg = st.text_input("You：", key="input_text")
+    submitted = st.form_submit_button("送信")
+
+if submitted and user_msg:
+    user_msg_clean = user_msg.strip()
+    # 終了判定
+    if user_msg_clean.lower() == 'q':
+        st.success("チャットを終了します。")
+        st.session_state.chat.append({"role": "user", "text": user_msg_clean})
+        st.experimental_rerun()
+
+    # ユーザーメッセージを保存して表示
+    st.session_state.chat.append({"role": "user", "text": user_msg_clean})
+
+    # 直前と異なる返信を選ぶ
+    available_replies = [r for r in REPLIES if r != st.session_state.last_reply]
+    chosen_reply = rd.choice(available_replies)
+    # 安全にユーザーメッセージを埋め込む
+    safe_reply = chosen_reply.replace("{user_msg}", user_msg_clean)
+
+    # 直前と異なる質問を選ぶ
+    available_questions = [q for q in QUESTIONS if q != st.session_state.last_ques]
+    chosen_ques = rd.choice(available_questions)
+
+    st.session_state.last_reply = chosen_reply
+    st.session_state.last_ques = chosen_ques
+
+    # タイピング演出（短時間）
+    with st.spinner(f"{name}が入力中..."):
+        time.sleep(rd.uniform(0.6, 1.5))
+
+    st.session_state.chat.append({"role": "bot", "text": safe_reply})
+    st.session_state.chat.append({"role": "bot", "text": chosen_ques})
+    st.experimental_rerun()
