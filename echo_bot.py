@@ -40,20 +40,45 @@ replies = [
     "{user_msg}"
 ]
 
-last_reply = None
-last_ques = None
-
-chosen_reply = rd.choice(replies)
-chosen_ques = rd.choice(question)
-
+# 前回の返信を保存
+if "last_reply" not in st.session_state:
+    st.session_state.last_reply = None
+if "last_ques" not in st.session_state:
+    st.session_state.last_ques = None
+# メッセージ入力
+user_msg = st.text_input("You：", key="chat_input")
 if user_msg:
-  available_replies = [r for r in replies if r != last_reply]
-  chosen_reply = rd.choice(available_replies).format(user_msg=user_msg)
-  last_reply = chosen_reply
+    # Qが入力された場合
+    if user_msg.lower() == "q":
+        if name_killed:
+            st.write(
+                "優しくしてりゃキューキューいいやがって"
+                "二度とその汚ねぇツラ見せんなよっ"
+            )
+        else:
+            st.write("また来てねっ")
+        st.stop()
+    # 前回と異なる返信を選ぶ
+    available_replies = [
+        r for r in replies
+        if r != st.session_state.last_reply
+    ]
 
-  available_questions = [q for q in question if q != last_ques]
-  chosen_ques = rd.choice(available_questions)
-  last_ques = chosen_ques
+    chosen_reply = rd.choice(available_replies)
+    chosen_reply = chosen_reply.format(user_msg=user_msg)
+
+    st.session_state.last_reply = chosen_reply
+
+
+    # 前回と異なる質問を選ぶ
+    available_questions = [
+        q for q in question
+        if q != st.session_state.last_ques
+    ]
+
+    chosen_ques = rd.choice(available_questions)
+
+    st.session_state.last_ques = chosen_ques
 
   if user_msg.lower() == 'q':
     if name_killed.lower() != 'q':
@@ -65,10 +90,10 @@ if user_msg:
     st.write("既読")
     typing_time = rd.uniform(2.0, 5.0)
     time.sleep(typing_time)
-    if name_killed != None:
+    if name_killed:
       st.write(f"{name} : {chosen_reply}（圧）")
       st.write(f"{name} : {chosen_ques}（圧）")
     else:
       st.write(f"{name} : {chosen_reply}")
       st.write(f"{name} : {chosen_ques}")
-  　user_msg = st.text_input("\nYou : ", key="chat_input")
+    user_msg = st.text_input("\nYou : ", key="chat_input")
