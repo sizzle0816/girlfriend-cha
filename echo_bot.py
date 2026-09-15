@@ -16,7 +16,6 @@ else:
   st.write("どしたん？")
 
 user_msg = st.text_input("\nYou : ", key="chat_input")
-
 question = [
     "それでそれで？",
     "ほかには？",
@@ -24,7 +23,6 @@ question = [
     "うんうん！",
     "ってことは...？"
 ]
-
 replies = [
     "へーそうなんだ",
     "すごーい（棒）",
@@ -39,7 +37,7 @@ replies = [
     "{user_msg}...ってコト！？",
     "{user_msg}"
 ]
-
+##########################################################
 # 前回の返信を保存
 if "last_reply" not in st.session_state:
     st.session_state.last_reply = None
@@ -57,37 +55,33 @@ if user_msg:
   else:
     st.write("また来てねっ")
   st.stop()
-    # 前回と異なる返信を選ぶ
-    available_replies = [
-        r for r in replies
-        if r != st.session_state.last_reply
-    ]
-
-    chosen_reply = rd.choice(available_replies)
-    chosen_reply = chosen_reply.format(user_msg=user_msg)
-
-    st.session_state.last_reply = chosen_reply
-
-
-    # 前回と異なる質問を選ぶ
-    available_questions = [
-        q for q in question
-        if q != st.session_state.last_ques
-    ]
-
-    chosen_ques = rd.choice(available_questions)
-
-    st.session_state.last_ques = chosen_ques
-if user_msg.lower() == 'q':
-  if not name_killed:
-    st.write("また来てねっ")
+  # 前回と異なる返信を選ぶ
+  available_replies = [
+    r for r in replies
+    if r != st.session_state.last_reply
+  ]
+  chosen_reply = rd.choice(available_replies)
+  chosen_reply = chosen_reply.format(user_msg=user_msg)
+  st.session_state.last_reply = chosen_reply
+  # 前回と異なる質問を選ぶ
+  available_questions = [
+    q for q in question
+    if q != st.session_state.last_ques
+  ]
+  chosen_ques = rd.choice(available_questions)
+  st.session_state.last_ques = chosen_ques
+#########################################################
+  if user_msg.lower() == 'q':
+    if not name_killed:
+      st.write("また来てねっ")
+    else:
+      st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
+    st.stop()
   else:
-    st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
-  st.stop()
-else:
-  st.write("既読")
-  typing_time = rd.uniform(2.0, 5.0)
-  time.sleep(typing_time)
+    st.write("既読")
+    typing_time = rd.uniform(2.0, 5.0)
+    time.sleep(typing_time)
+    
   if name_killed:
     st.write(f"{name} : {chosen_reply}（圧）")
     st.write(f"{name} : {chosen_ques}（圧）")
