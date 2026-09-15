@@ -49,15 +49,14 @@ if "last_ques" not in st.session_state:
 user_msg = st.text_input("You：", key="chat_input")
 if user_msg:
     # Qが入力された場合
-    if user_msg.lower() == "q":
-        if name_killed:
-            st.write(
-                "優しくしてりゃキューキューいいやがって"
-                "二度とその汚ねぇツラ見せんなよっ"
-            )
-        else:
-            st.write("また来てねっ")
-        st.stop()
+  if name_killed:
+    st.write(
+      "優しくしてりゃキューキューいいやがって"
+      "二度とその汚ねぇツラ見せんなよっ"
+    )
+  else:
+    st.write("また来てねっ")
+  st.stop()
     # 前回と異なる返信を選ぶ
     available_replies = [
         r for r in replies
@@ -80,7 +79,7 @@ if user_msg:
 
     st.session_state.last_ques = chosen_ques
 if user_msg.lower() == 'q':
-  if name_killed.lower() != 'q':
+  if not name_killed:
     st.write("また来てねっ")
   else:
     st.write("優しくしてりゃキューキューいいやがって\n二度とその汚ねぇツラ見せんなよっ")
