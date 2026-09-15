@@ -14,8 +14,6 @@ if name.lower() == 'q':
   name = "激オコの我"
 else:
   st.write("どしたん？")
-
-user_msg = st.text_input("\nYou : ", key="chat_input")
 question = [
     "それでそれで？",
     "ほかには？",
