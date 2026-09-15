@@ -13,7 +13,7 @@ if name:
 		st.write("人だね、殺します")
 		name_killed = name
 		name = "激オコの我"
-    else:
+	else:
 		st.write("どしたん？")
 question = [
     "それでそれで？",
