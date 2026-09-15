@@ -5,7 +5,7 @@ import time
 st.title("彼女とのチャットアプリ")
 
 st.write("終わるにはQまたはqを押してねっ")
-name = st.text_input("彼女の名前：")
+name = st.chat_input("彼女の名前：")
 st.write(f"{name}：やっほー")
 name_killed = None
 if name.lower() == 'q':
@@ -36,7 +36,7 @@ if "last_reply" not in st.session_state:
 if "last_ques" not in st.session_state:
     st.session_state.last_ques = None
 # メッセージ入力
-user_msg = st.text_input("You：", key="chat_input")
+user_msg = st.chat_input("You：", key="chat_input")
 if user_msg:
   # 前回と異なる返信を選ぶ
   available_replies = [
