@@ -11,7 +11,7 @@ name_killed = None
 if name:
 	if name.lower() == 'q':
 		st.write("人だね、殺します")
-        name_killed = name
+		name_killed = name
         name = "激オコの我"
     else:
         st.write("どしたん？")
