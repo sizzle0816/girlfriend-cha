@@ -5,8 +5,9 @@ import time
 st.title("彼女とのチャットアプリ")
 
 st.write("終わるにはQまたはqを押してねっ")
-name = st.chat_input("彼女の名前：")
-st.write(f"{name}：やっほー")
+name = st.text_input("彼女の名前：")
+if name:
+	st.write(f"{name}：やっほー")
 name_killed = None
 if name:
 	if name.lower() == 'q':
